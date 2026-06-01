@@ -1,0 +1,15 @@
+.git
+.venv
+.pytest_cache
+.coverage
+__pycache__
+*.py[cod]
+
+data
+
+.env
+.env.*
+!.env.example
+
+*.log
+*.tmp

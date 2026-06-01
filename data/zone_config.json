@@ -1,0 +1,65 @@
+{
+  "version": "2026-06-01-store-layout-visual-v1",
+  "source": "data/store_layout.xlsx embedded floor-plan images",
+  "layout_source": {
+    "path": "data/store_layout.xlsx",
+    "worksheet": "Sheet1",
+    "embedded_media": "xl/media/image1.png",
+    "embedded_media_sha256": "4c3f1fb7b2d93a968fdbbae4858ee4b0ad9e8929013e629e4e01b9c84ff03078"
+  },
+  "coordinate_space": "normalized",
+  "notes": "Initial configurable calibration derived from the visual store-layout workbook. Polygons are normalized to each camera frame so they remain resolution-independent and can be refined without code changes.",
+  "stores": {
+    "STORE_BLR_002": {
+      "cameras": {
+        "CAM_1": {
+          "frame_width": 1920,
+          "frame_height": 1080,
+          "zones": [
+            {"zone_id": "ENTRY", "polygon": [[0.00, 0.58], [0.22, 0.58], [0.22, 1.00], [0.00, 1.00]]},
+            {"zone_id": "CASH_COUNTER", "polygon": [[0.70, 0.52], [1.00, 0.52], [1.00, 1.00], [0.70, 1.00]]},
+            {"zone_id": "BEAUTY_ESSENTIAL", "polygon": [[0.38, 0.60], [0.68, 0.60], [0.68, 1.00], [0.38, 1.00]]}
+          ]
+        },
+        "CAM_2": {
+          "frame_width": 1920,
+          "frame_height": 1080,
+          "zones": [
+            {"zone_id": "FRAGRANCE_ISLAND", "polygon": [[0.06, 0.34], [0.35, 0.34], [0.35, 0.70], [0.06, 0.70]]},
+            {"zone_id": "MAKEUP_UNIT", "polygon": [[0.38, 0.28], [0.66, 0.28], [0.66, 0.76], [0.38, 0.76]]},
+            {"zone_id": "MINIMALIST", "polygon": [[0.69, 0.30], [0.96, 0.30], [0.96, 0.74], [0.69, 0.74]]}
+          ]
+        },
+        "CAM_3": {
+          "frame_width": 1920,
+          "frame_height": 1080,
+          "zones": [
+            {"zone_id": "AQUALOGICA", "polygon": [[0.04, 0.28], [0.28, 0.28], [0.28, 0.70], [0.04, 0.70]]},
+            {"zone_id": "PILGRIM", "polygon": [[0.30, 0.26], [0.52, 0.26], [0.52, 0.72], [0.30, 0.72]]},
+            {"zone_id": "DERMDOC", "polygon": [[0.54, 0.26], [0.74, 0.26], [0.74, 0.72], [0.54, 0.72]]},
+            {"zone_id": "D_AND_K", "polygon": [[0.76, 0.28], [0.98, 0.28], [0.98, 0.72], [0.76, 0.72]]}
+          ]
+        },
+        "CAM_4": {
+          "frame_width": 1920,
+          "frame_height": 1080,
+          "zones": [
+            {"zone_id": "MAYBELLINE", "polygon": [[0.03, 0.25], [0.24, 0.25], [0.24, 0.78], [0.03, 0.78]]},
+            {"zone_id": "FACES", "polygon": [[0.26, 0.25], [0.47, 0.25], [0.47, 0.78], [0.26, 0.78]]},
+            {"zone_id": "LAKME", "polygon": [[0.49, 0.25], [0.70, 0.25], [0.70, 0.78], [0.49, 0.78]]},
+            {"zone_id": "SWISS_PLUS", "polygon": [[0.72, 0.25], [0.96, 0.25], [0.96, 0.78], [0.72, 0.78]]}
+          ]
+        },
+        "CAM_5": {
+          "frame_width": 1920,
+          "frame_height": 1080,
+          "zones": [
+            {"zone_id": "LOREAL", "polygon": [[0.05, 0.24], [0.31, 0.24], [0.31, 0.80], [0.05, 0.80]]},
+            {"zone_id": "ALPS", "polygon": [[0.34, 0.24], [0.61, 0.24], [0.61, 0.80], [0.34, 0.80]]},
+            {"zone_id": "BEAUTY_ESSENTIAL", "polygon": [[0.64, 0.24], [0.95, 0.24], [0.95, 0.80], [0.64, 0.80]]}
+          ]
+        }
+      }
+    }
+  }
+}

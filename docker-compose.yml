@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REQUIREMENTS_FILE: requirements-api.txt
+        INSTALL_OPENCV_LIBS: "0"
+    env_file:
+      - .env.example
+    environment:
+      STORE_INTEL_DATABASE_PATH: /app/data/store_intelligence.db
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+      - ./data/CCTV Footage:/app/data/CCTV Footage:ro
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=2)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REQUIREMENTS_FILE: requirements-dashboard.txt
+        INSTALL_OPENCV_LIBS: "0"
+    command:
+      - streamlit
+      - run
+      - dashboard/streamlit_app.py
+      - --server.address=0.0.0.0
+      - --server.port=8501
+      - --server.headless=true
+    environment:
+      STORE_INTEL_API_URL: http://api:8000
+      STORE_INTEL_DASHBOARD_STORE_ID: STORE_BLR_002
+    ports:
+      - "8501:8501"
+    depends_on:
+      api:
+        condition: service_started

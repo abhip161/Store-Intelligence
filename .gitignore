@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment files
+.env
+
+# Runtime data
+data/*.db
+data/*.db-shm
+data/*.db-wal
+data/events.jsonl
+data/generated/
+
+# Model weights and large artifacts
+*.pt
+*.onnx
+*.engine
+*.mp4
+*.avi
+*.mov
+*.mkv
+
+# OS/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+

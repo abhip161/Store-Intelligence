@@ -1,0 +1,13 @@
+{
+  "name": "sample-cam3-event-benchmark",
+  "description": "Reviewer-facing count benchmark for generated CAM_3 sample events.",
+  "events_path": "data/events_v2.jsonl",
+  "tolerance": 0,
+  "cameras": {
+    "CAM_3": {
+      "ENTRY": 1,
+      "EXIT": 1,
+      "REENTRY": 1
+    }
+  }
+}

@@ -1,0 +1,25 @@
+[project]
+name = "store-intelligence"
+version = "0.1.0"
+description = "Purplle Store Intelligence Challenge implementation"
+requires-python = ">=3.11,<3.12"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-q --cov=app --cov-report=term-missing --cov-fail-under=80"
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+src = ["app", "pipeline", "dashboard", "scripts", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = []
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
