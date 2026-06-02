@@ -44,3 +44,23 @@ services:
     depends_on:
       api:
         condition: service_started
+
+  pipeline:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        REQUIREMENTS_FILE: requirements.txt
+        INSTALL_OPENCV_LIBS: "1"
+    # Keep OpenCV/Torch/Ultralytics isolated from the API and dashboard images.
+    # The pipeline image is intentionally heavier and is used for manual runs and future ingestion jobs.
+    command:
+      - sleep
+      - infinity
+    env_file:
+      - .env.example
+    environment:
+      STORE_INTEL_DATABASE_PATH: /app/data/store_intelligence.db
+    volumes:
+      - ./data:/app/data
+      - ./data/CCTV Footage:/app/data/CCTV Footage
