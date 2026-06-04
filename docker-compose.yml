@@ -3,9 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        REQUIREMENTS_FILE: requirements-api.txt
-        INSTALL_OPENCV_LIBS: "0"
+      target: api
     env_file:
       - .env.example
     environment:
@@ -26,9 +24,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      args:
-        REQUIREMENTS_FILE: requirements-dashboard.txt
-        INSTALL_OPENCV_LIBS: "0"
+      target: dashboard
     command:
       - streamlit
       - run
@@ -46,11 +42,13 @@ services:
         condition: service_started
 
   pipeline:
+    profiles:
+      - pipeline
     build:
       context: .
       dockerfile: Dockerfile
+      target: pipeline
       args:
-        REQUIREMENTS_FILE: requirements.txt
         INSTALL_OPENCV_LIBS: "1"
     # Keep OpenCV/Torch/Ultralytics isolated from the API and dashboard images.
     # The pipeline image is intentionally heavier and is used for manual runs and future ingestion jobs.
