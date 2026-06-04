@@ -2,25 +2,85 @@
 
 CCTV-derived retail intelligence for a Purplle-style store. The system turns person tracks into auditable store events, stores them in SQLite, and exposes APIs for visitor metrics, funnel, heatmap, anomalies, health, and a Streamlit dashboard.
 
-## Quick Start
+# Quick Start
+
+```bash
+git clone https://github.com/abhip161/Store-Intelligence.git
+cd Store-Intelligence
+```
 
 ```bash
 docker compose up --build
 ```
 
-This starts the API and dashboard only. The heavier video pipeline image is optional and
-is built only when its Compose profile is enabled:
+This starts the API and dashboard only. The heavier video pipeline image is optional and is built only when its Compose profile is enabled.
 
 ```bash
 docker compose --profile pipeline up --build
 ```
 
-Open:
+# Typical Workflow
 
-- API: `http://localhost:8000`
+```text
+Clone Repo
+    ↓
+Start API + Dashboard
+    ↓
+Enable Pipeline Profile
+    ↓
+Place CCTV Video
+    ↓
+Run pipeline_runner
+    ↓
+Generate events.jsonl
+    ↓
+Replay Events
+    ↓
+View Dashboard Analytics
+```
+
+# Process Your Own CCTV Videos
+
+Place CCTV videos inside:
+
+```text
+data/CCTV Footage/
+```
+
+Start the pipeline profile:
+
+```bash
+docker compose --profile pipeline up --build
+```
+
+Process a video:
+
+```bash
+docker compose exec pipeline python -m pipeline.pipeline_runner \
+  --video "/app/data/CCTV Footage/entry 2.mp4" \
+  --camera-id BILLING \
+  --line-start 0,500 \
+  --line-end 1920,500 \
+  --frame-stride 5 \
+  --output /app/data/events.jsonl
+```
+## Replay Events Into The API
+
+```bash
+docker compose exec pipeline python /app/scripts/replay_events.py \
+  --file /app/data/events.jsonl \
+  --api-url http://api:8000
+```
+
+This loads generated events into the API database so analytics become visible in the dashboard.
+
+## View Results
+
 - Dashboard: `http://localhost:8501`
-- Health: `http://localhost:8000/health`
-- Swagger API Docs: `http://localhost:8000/docs`
+- Swagger Docs: `http://localhost:8000/docs`
+- Health Check: `http://localhost:8000/health`
+
+Funnel analytics, heatmaps, visitor metrics, queue metrics, and anomaly detection update after event ingestion.
 
 ## Quick Validation
 
@@ -89,15 +149,6 @@ scripts/      POS loader, event replay utility, and detection benchmark
 tests/        API, analytics, ingestion, POS, benchmark, and pipeline tests
 data/         Sample SQLite DB, POS CSV, zone config, and CCTV clips
 ```
-
-## Evaluation Mapping
-
-| Scoring area | Implemented evidence |
-| --- | --- |
-| Detection pipeline | YOLOv8 person detector, ByteTrack adapter, entry/exit line crossing, zone transitions, dwell events, re-entry session matching |
-| API | Required endpoints, historical `start`/`end` query windows, Pydantic validation, idempotent ingest, partial batch rejection, SQLite-backed analytics |
-| Production | Docker Compose, slim API/dashboard dependency builds, health endpoint, structured errors, trace IDs, SQLite indexes, config via environment |
-| Engineering thinking | Documented tradeoffs, rejected alternatives, tests for duplicate ingest, staff exclusion, empty stores, queue, heatmap, POS attribution |
 
 ## Detection Validation
 
@@ -233,31 +284,30 @@ Sample heatmap zone:
 
 ## Running The Pipeline
 
-The Python pipeline can be run locally after installing the pipeline dependencies:
-
-```bash
-pip install -r requirements-pipeline.txt
-```
-
-```bash
-python -m pipeline.pipeline_runner ^
-  --video "data/CCTV Footage/CAM 1.mp4" ^
-  --line-start 0,500 ^
-  --line-end 1920,500 ^
-  --frame-stride 5 ^
-  --output data/events.jsonl
-```
-
 To include the pipeline container in Docker Compose:
 
 ```bash
 docker compose --profile pipeline up --build
 ```
 
+Generate an event stream from a CCTV clip:
+
+```bash
+docker compose exec pipeline python -m pipeline.pipeline_runner \
+  --video "/app/data/CCTV Footage/CAM 1.mp4" \
+  --camera-id CAM_1 \
+  --line-start 0,500 \
+  --line-end 1920,500 \
+  --frame-stride 5 \
+  --output /app/data/events.jsonl
+```
+
 Replay generated events:
 
 ```bash
-python scripts/replay_events.py --file data/events.jsonl
+docker compose exec pipeline python /app/scripts/replay_events.py \
+  --file /app/data/events.jsonl \
+  --api-url http://api:8000
 ```
 
 Load POS rows:
