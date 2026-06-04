@@ -8,6 +8,13 @@ CCTV-derived retail intelligence for a Purplle-style store. The system turns per
 docker compose up --build
 ```
 
+This starts the API and dashboard only. The heavier video pipeline image is optional and
+is built only when its Compose profile is enabled:
+
+```bash
+docker compose --profile pipeline up --build
+```
+
 Open:
 
 - API: `http://localhost:8000`
@@ -226,6 +233,12 @@ Sample heatmap zone:
 
 ## Running The Pipeline
 
+The Python pipeline can be run locally after installing the pipeline dependencies:
+
+```bash
+pip install -r requirements-pipeline.txt
+```
+
 ```bash
 python -m pipeline.pipeline_runner ^
   --video "data/CCTV Footage/CAM 1.mp4" ^
@@ -233,6 +246,12 @@ python -m pipeline.pipeline_runner ^
   --line-end 1920,500 ^
   --frame-stride 5 ^
   --output data/events.jsonl
+```
+
+To include the pipeline container in Docker Compose:
+
+```bash
+docker compose --profile pipeline up --build
 ```
 
 Replay generated events:
@@ -266,7 +285,7 @@ python scripts/load_pos.py --file data/pos_transactions.csv
 
 ## Troubleshooting
 
-- If Docker build is slow, API and dashboard images should reuse cached dependency layers. The Compose build uses slim API/dashboard requirements; the full `requirements.txt` path is still available for local pipeline work.
+- If Docker build is slow, API and dashboard images should reuse cached dependency layers. The default Compose build uses service-specific Docker stages and does not build the pipeline image. Use `docker compose --profile pipeline up --build` only when the video pipeline container is needed.
 - If `/health` is `DEGRADED`, the latest event is older than `STORE_INTEL_STALE_FEED_MINUTES`.
 - If metrics are empty, ingest events for the same `store_id` and either query the matching historical window or use current UTC-day data.
 - If POS purchases do not appear, check `STORE_INTEL_POS_CONVERSION_WINDOW_MINUTES`.

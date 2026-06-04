@@ -1,9 +1,19 @@
 .git
+.github
+.gitignore
 .venv
+venv
+env
 .pytest_cache
+.ruff_cache
+.mypy_cache
 .coverage
+coverage
+htmlcov
 __pycache__
+**/__pycache__/
 *.py[cod]
+*.pyo
 
 data
 
@@ -11,5 +21,16 @@ data
 .env.*
 !.env.example
 
+docs
+tests
+
+*.md
+*.lock
 *.log
 *.tmp
+*.bak
+*.swp
+*.swo
+
+Dockerfile*
+docker-compose*.yml
